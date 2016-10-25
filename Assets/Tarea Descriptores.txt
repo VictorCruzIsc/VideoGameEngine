@@ -1,0 +1,95 @@
+1.- Campos de un descriptor x86 de 32bits-----------------------------------------------------------------------------|
+
+>Dirección del segmento base.
+>Límite del segmento que indica el tamaño.
+>Derechos de acceso conteniendo el mecanismo de portección a la información.
+>Bits de control.
+
+
+2.- Modo Protegido----------------------------------------------------------------------------------------------------|
+
+El modo protegido sirve para mejorar la multitarea y la estabilidad del sistema, 
+tales como la protección de memoria, y soporte de hardware para memoria virtual 
+como también la conmutación de tarea. 
+
+El otro modo operacional principal del 286 y CPUs posteriores es el modo real, 
+un modo de compatibilidad hacia atrás que desactiva las características propias 
+del modo protegido, diseñado para permitir al software viejo ejecutarse en los 
+chips más recientes.
+
+Modo Real:
+                                   [________]
+                                   [        ]
+                                   [        ]
+    [OFFSET]-------------[+]------>[||||||||]   
+                          |        [        ]
+                          |___     [        ] 64 Kbytes
+                              |    [        ]
+                              |    [        ]
+                              |    [        ]
+    [Selector]---[x16]------------>[________]
+                               ||  [        ]
+                               ||  [        ]
+                               ||
+                            (20 bit)
+
+Modo protegido:
+
+                                   [________]
+                                   [        ]
+                                   [        ]
+    [OFFSET]-------------[+]------>[||||||||]   
+                          |        [        ]
+                          |___     [        ] Definible...
+                              |    [        ]
+                              |    [        ]
+                              |    [        ]
+    [Selector]---[Descriptor]----->[________]
+                               ||  [        ]
+                               ||  [        ]
+                               ||
+                            (32 bit)
+
+3.- Enumere los tipos de permisos aplicables a un descriptor x86 de 32 bits-------------------------------------------|
+
+Los permisos se definen en el descriptor de seguridad de un objeto. Se asocian o 
+asignan a usuarios y grupos específicos. Por ejemplo, para el archivo Temp.dat, 
+podría asignarse al grupo Administrador permisos para leer, escribir y eliminar, 
+mientras que al grupo Operador sólo permisos para leer y escribir.
+
+Cada asignación de permiso a un usuario o grupo se denomina entrada de permiso o 
+entrada de control de acceso (ACE). A la serie completa de entradas de permiso de 
+un descriptor de seguridad se le denomina conjunto de permisos o lista de control 
+de acceso (ACL). De esta forma, para un archivo denominado Temp.dat, el grupo de 
+permisos incluye dos entradas de permiso, una para el grupo Administrador y otra 
+para el grupo Operador.
+
+En resumen son:
+>Entrada de control de acceso (ACE).
+>Conjunto de permisos o lista de control de acceso (ACL).
+
+4.-Campos que permiten definir el inicio y final de la memoria que describen------------------------------------------|
+
+>El código de operación MOV.
+Mov es una instrucción(en el lenguaje ensamblador), cuyo propósito es la transferencia de datos entre registros de 
+procesador o registro y memoria.
+
+5.-Enumere tipo de errores o excepciones que se producen al infringir un descriptor-----------------------------------|
+
+>No Error: Ningún error se ha informado a este banco de informe de errores de registro.
+>Unclassified: Este error no ha sido clasificado en las clases de error.
+>Microcode ROM Parity Error: Error de paridad.
+>External Error.
+>FRC Error.
+>Internal Parity Error.
+>Internal Timer Error.
+>Internal Unclassified.
+
+
+
+
+
+
+
+
+

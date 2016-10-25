@@ -1,0 +1,27 @@
+1) Qué campos tiene un descriptor?
+	Contienen la dirección base y el límite del segmento en el espacio
+	lógico.
+
+2) Qué es un modo protegido?
+	Es un método para controlar el uso de memoria en una computadora, y es parte esencial de prácticamente todos 
+	los sistemas operativos modernos. El principal propósito de la protección de memoria es evitar que un proceso 
+	en un sistema operativo acceda a la memoria que no le ha sido asignada. Así pueden evitarse problemas durante 
+	la ejecución del software, y también se evita que software maligno acceda a los recursos del sistema.
+
+3) Enumere los tipos de permisos aplicables a un descriptor x86 de 32 bits:
+
+	Real, protegido y usuario.
+
+	- Intrucción privilegiada: son las instrucciones del anillo 0. que puede redefinir segmentos arbitrariamente 
+	y por lo tanto vencer el mecanismo de protección (Pop Flags desde la pila, IOPL desde anillo 0).
+	- Entrada/salida: permisos de entrada y de salida.
+	- Cargar registros de segmento (far jumps).
+	- Retornando a código menos privilegiado.
+	- Paginación.
+
+4) Qué campos del descriptor permiten definir el inicio y el final de la memoria que describen?
+	gdtr y ldtr.
+
+5) Enumere el tipo de errores o excepeciones que se producen al infringir un descriptor:
+	INTO, INT 3 y BOUND	
+

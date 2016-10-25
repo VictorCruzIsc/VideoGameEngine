@@ -1,0 +1,33 @@
+Tarea: Investigar acerca de los descriptores y su escritura interna en x86:
+
+Nombre: Andres Sandoval Orozco 3*IDV
+
+1) que campos tiene un descriptor x86 de 32 bits
+
+
+*Direccion base, Limite de segmento, nivel de privilegio
+
+2) que es modo protegido
+
+
+*El modo protegido es un conjunto de caracteristicas de los CPU's que agrega 
+opciones como mejoras de estabilidad, multitareas, proteccion de memoria y 
+soporte de hardware para memoria virutal.
+
+3) enumere los tipos de permisos aplicables a un descriptor x86 de 32 bits
+
+
+*Leer, escribir y ejecutar.
+
+4) que campos del descriptor permiten definir el inicio y final de la memoria que describen?
+
+
+*En la direccion base
+
+5) enumere el tipo de errores o excepciones que se producen al infringir un descriptor.
+
+*División por cero; excepción de depuración; NMI, interrupción no enmascarable (Non-Maskable Interrupt); 
+punto de ruptura (breakpoint); desbordamiento (overflow); chequeo de límites (bounds check);
+ código inválido; dipositivo no disponible; doble falta; 80486+ = reservado (80386- = co-pro segment overrun);
+TSS (task state segment) inválido; segmento no presente; excepción de la pila; fallo de protección general; 
+fallo de página; error del FPU; chequeo de alineación.
