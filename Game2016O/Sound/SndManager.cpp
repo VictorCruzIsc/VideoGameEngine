@@ -96,7 +96,7 @@ bool CSndManager::InitSoundEngine(HWND hWnd)
 	wfx.nAvgBytesPerSec=wfx.nBlockAlign*wfx.nSamplesPerSec; //Bytes reproducidos por segundo
 	//Establecer el formato del buffer primario
 	hr=m_pIPrimaryBuffer->SetFormat(&wfx);
-	hr=m_pIPrimaryBuffer->Play(0,0,DSBPLAY_LOOPING);
+	hr=m_pIPrimaryBuffer->Play(0,0,DSBPLAY_LOOPING); // Buffer circular
 	return true;
 }
 
@@ -150,7 +150,7 @@ CSndFx* CSndManager::LoadSoundFx(TCHAR *pszFileName, unsigned long ulIDSndFx)
 	}
 	ReadFile(hFile,&wf.wFormatTag,24,&dwDummy,NULL);
 
-	DWORD dwPosition=SetFilePointer(hFile,0,0,FILE_CURRENT);
+	DWORD dwPosition=SetFilePointer(hFile,0,0,FILE_BEGIN);
 
 	while(1)
 	{
@@ -238,7 +238,7 @@ unsigned long CSndManager::PlayFx(
 	pSndDuplicatedSound->SetSpeed(fSpeed);
 	pSndDuplicatedSound->SetPlayPosition(fPosition);
 	pSndDuplicatedSound->Play(false);
-	if(m_pSndFxPlayingPool->size()>m_ulMaxFxPlaying)
+	if(m_pSndFxPlayingPool->size()>m_ulMaxFxPlaying) // Si el tamanno del pool de sonidos ya es muy grande borra los sonidos mas antiguos
 	{
 		CSndPool::iterator it=m_pSndFxPlayingPool->begin();
 		it->second->Stop();

@@ -31,6 +31,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
+	// Create Console
+	AllocConsole();
+	AttachConsole(GetCurrentProcessId());
+	HWND g_hWnd = GetConsoleWindow();
+	FILE *pNewStream = NULL;
+	freopen_s(&pNewStream, "CON", "w", stdout);
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -48,14 +54,26 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
 
     // Main message loop:
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-    }
+	bool bExit = false;
+	CEventBase AppLoop;
+	AppLoop.m_ulEventType = APP_LOOP;
+	while (!bExit) {
+		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			if (WM_QUIT == msg.message) {
+				bExit = true;
+			}
+
+			if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+		}
+
+		// Application Time!!
+		g_Game.Dispatch(&AppLoop);
+	}
 
     return (int) msg.wParam;
 }
