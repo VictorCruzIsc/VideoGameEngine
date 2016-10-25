@@ -22,7 +22,7 @@ float CSndFx::GetPlayPosition()
 }
 void CSndFx::SetPlayPosition(float fPosition)
 {
-	WAVEFORMATEX wfx;
+	WAVEFORMATEX wfx; // Microsoft permite cargar los archivos
 	DSBCAPS dsc;
 	dsc.dwSize=sizeof(DSBCAPS);
 	m_pIDirectSoundBuffer->GetCaps(&dsc);

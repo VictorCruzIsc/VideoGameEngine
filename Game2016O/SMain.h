@@ -2,6 +2,10 @@
 #include "HSM\StateBase.h"
 #include "Graphics\DXManager.h"
 #include "Graphics\DXBasicPainter.h"
+#include "Sound\SndManager.h"
+#include "Sound\SndControl.h"
+#include "Sound\SndFx.h"
+#include "Sound\SndFactory.h"
 
 #define MAIN ((CSMain*)m_pSMOwner->GetObjectByID(CLSID_CSMain))
 
@@ -13,6 +17,7 @@ public:
 	HWND		m_hWnd;
 	CDXManager* m_pDXManager;
 	CDXBasicPainter* m_pDXPainter;
+	CSndManager* m_pSndManager;
 	bool        m_bInitializationCorrect;
 	unsigned long GetClassID() { return CLSID_CSMain; }
 	const char* GetClassString() { return "CSMain"; }
@@ -23,4 +28,3 @@ protected:
 	unsigned long OnEvent(CEventBase* pEvent);
 	void OnExit(void);
 };
-

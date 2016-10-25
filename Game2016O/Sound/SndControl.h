@@ -18,9 +18,9 @@ protected:
 	IDirectSoundBuffer8* m_pIDirectSoundBuffer;
 public:
 	virtual CSndControl* DuplicateSound(void);
-	virtual void SetVolume(float fVolume);
+	virtual void SetVolume(float fVolume); //0 .. 1
 	virtual void SetPan(float fBalance);
-	virtual void SetSpeed(float fSpeed);
+	virtual void SetSpeed(float fSpeed); // Velocidad de reproduccion, velocidad a la que provees la informacion
 	virtual void Play(bool bLooping);
 	virtual void Stop(void);
 	virtual bool IsPlaying(void);
