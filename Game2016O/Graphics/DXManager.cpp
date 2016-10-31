@@ -143,8 +143,12 @@ ID3D10Blob* CDXManager::CompileShader(
 		pszFileName, NULL,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		pszEntryPoint, pszTarget,
-		D3DCOMPILE_ENABLE_STRICTNESS |
-		D3DCOMPILE_OPTIMIZATION_LEVEL3, 0,
+#ifdef _DEBUG
+		D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG,
+#else
+		D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_OPTIMIZATION_LEVEL3,
+#endif
+		0,
 		&pDXIL, &pErrors
 		);
 	if (pErrors)
@@ -159,9 +163,6 @@ ID3D10Blob* CDXManager::CompileShader(
 	{
 		return pDXIL;
 	}
-
-	
-
 	return NULL;
 }
 

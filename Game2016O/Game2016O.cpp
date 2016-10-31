@@ -1,13 +1,16 @@
 // Game2016O.cpp : Defines the entry point for the application.
 //
 
+
 #include "stdafx.h"
+#include <io.h>
+#include <fcntl.h>
 #include "Game2016O.h"
 #include "HSM\StateMachineManager.h"
+#include "SMain.h"
 #include "SIntroduction.h"
 #include "SGame.h"
-#include "SMain.h"
-
+#include "SMainMenu.h"
 #define MAX_LOADSTRING 100
 
 // Global Variables:
@@ -15,8 +18,7 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 CStateMachineManager g_Game;                    // The Game
-
-												// Forward declarations of functions included in this code module:
+// Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -29,14 +31,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-
     // TODO: Place code here.
-	// Create Console
+#ifdef _DEBUG
 	AllocConsole();
 	AttachConsole(GetCurrentProcessId());
-	HWND g_hWnd = GetConsoleWindow();
-	FILE *pNewStream = NULL;
-	freopen_s(&pNewStream, "CON", "w", stdout);
+	FILE* pNewStream = NULL;
+	freopen_s(&pNewStream,"CON", "w", stdout);
+	char *pBuffer = (char*)malloc(32);
+	setvbuf(stdout, pBuffer, _IOFBF, 32);
+	SetConsoleTitle(TEXT("@Ware Interactive Foundation Framework - Debug and Information Console"));
+#endif
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -57,25 +61,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	bool bExit = false;
 	CEventBase AppLoop;
 	AppLoop.m_ulEventType = APP_LOOP;
-	while (!bExit) {
-		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	while (!bExit)
+	{
+		while (PeekMessage(&msg, nullptr, 0, 0,PM_REMOVE))
 		{
-			if (WM_QUIT == msg.message) {
+			if (WM_QUIT == msg.message)
+			{
 				bExit = true;
 			}
-
 			if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
 			{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
 		}
-
-		// Application Time!!
+		//Application time!!!!
 		g_Game.Dispatch(&AppLoop);
-		// Si vas a producir eventos no los produzcas internamente
-		// envia a ver si hay eventos y los procesa
-		g_Game.ProcessEvents(); 
+		g_Game.ProcessEvents();
 	}
 
     return (int) msg.wParam;
@@ -101,7 +103,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hInstance      = hInstance;
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAME2016O));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-	wcex.hbrBackground  = 0;// (HBRUSH)(COLOR_WINDOW + 1);
+	wcex.hbrBackground =  0; //(HBRUSH)(COLOR_WINDOW + 1);
     wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_GAME2016O);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
@@ -132,14 +134,16 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    }
    //Application Map Design
    CSMain* pSMain = new CSMain();
-   CSIntroduction *pSIntroduction = new CSIntroduction();
-   CSGame *pSGame = new CSGame();
-
+   CSIntroduction* pSIntroduction = new CSIntroduction();
+   CSGame* pSGame = new CSGame();
+   CSMainMenu* pSMainMenu = new CSMainMenu();
    g_Game.RegisterState(pSIntroduction, CLSID_CSIntroduction, 0);
    g_Game.RegisterState(pSGame, CLSID_CSGame, 0);
+   g_Game.RegisterState(pSMainMenu, CLSID_CSMainMenu, 0);
    g_Game.RegisterState(pSMain, CLSID_CSMain, CLSID_CSIntroduction);
    g_Game.LinkToSuperState(CLSID_CSIntroduction, CLSID_CSMain);
    g_Game.LinkToSuperState(CLSID_CSGame, CLSID_CSMain);
+   g_Game.LinkToSuperState(CLSID_CSMainMenu, CLSID_CSMain);
    g_Game.SetInitialState(CLSID_CSMain);
    pSMain->m_hWnd = hWnd;
    pSMain->m_hInstance = hInstance;
@@ -185,15 +189,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_PAINT:
-        {
-			/*
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
-			*/
-		ValidateRect(hWnd, NULL);
-        }
+ 		ValidateRect(hWnd, NULL);
         break;
     case WM_DESTROY:
         PostQuitMessage(0);

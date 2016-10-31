@@ -4,7 +4,7 @@ class CEventListener
 {
 public:
 	CEventListener(void);
-	virtual unsigned long OnEvent(CEventBase* pEvent)=0;
+	virtual unsigned long OnEvent(CEventBase* pEvent) = 0;
 	virtual ~CEventListener(void);
 };
 

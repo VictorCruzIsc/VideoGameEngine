@@ -40,7 +40,7 @@ public:
 	virtual unsigned long PlayFx(unsigned long ulIDSndFx,float fVolume=1.0f,float fBalance=0.0f,float fSpeed=1.0f,float fPosition=0.0f); //Retona Key de reproducción actual
 	virtual CSndControl* GetPlayingFx(unsigned long ulKeySnd);
 	virtual bool IsPlayingFx(unsigned long ulKeySnd);
-	virtual bool StopFx(unsigned ulKeySnd);
+	virtual bool StopFx(unsigned int ulKeySnd);
 	virtual void RemoveAllSndFxStopped(void);
 	virtual void SetMaximumFxPlaying(unsigned long ulMaxFxPlaying);
 	virtual void StopAll(void);
