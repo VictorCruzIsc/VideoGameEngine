@@ -13,6 +13,8 @@
 
 #define JOY_AXIS_LX            9
 #define JOY_AXIS_LY            10
+#define JOY_AXIS_RX				11
+#define JOY_AXIS_RY				12
 
 class CActionEvent :
 	public CEventBase

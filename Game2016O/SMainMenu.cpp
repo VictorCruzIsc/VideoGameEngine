@@ -63,13 +63,16 @@ void CSMainMenu::OnExit()
 	SAFE_RELEASE(m_pSRVMainOption2);
 }
 #include "ActionEvent.h"
+#include "SGame.h"
 unsigned long CSMainMenu::OnEvent(CEventBase* pEvent)
 {
 	if (ACTION_EVENT == pEvent->m_ulEventType)
 	{
 		CActionEvent* pInput = (CActionEvent*)pEvent;
-		if (JOY_BUTTON_A_PRESSED==pInput->m_nAction)
-			MAIN->m_pSndManager->PlayFx(1);
+		if (JOY_BUTTON_A_PRESSED == pInput->m_nAction) {
+			//MAIN->m_pSndManager->PlayFx(1);
+			m_pSMOwner->Transition(CLSID_CSGame);
+		}
 		if (JOY_AXIS_LX == pInput->m_nAction)
 		{
 			m_fOffsetX = m_fOffsetX + (pInput->m_fAxis - m_fOffsetX)*0.1;

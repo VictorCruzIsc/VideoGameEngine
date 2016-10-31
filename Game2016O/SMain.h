@@ -7,7 +7,7 @@
 #include "Sound\SndControl.h"
 #include "Sound\SndFx.h"
 #include "Input\InputManager.h"
-
+#include "Graphics\Mesh.h"
 
 
 #define MAIN ((CSMain*)m_pSMOwner->GetObjectByID(CLSID_CSMain))

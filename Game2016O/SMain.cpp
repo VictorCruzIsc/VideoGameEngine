@@ -123,6 +123,13 @@ unsigned long CSMain::OnEvent(CEventBase * pEvent)
 		CEventWin32* pWin32 = (CEventWin32*)pEvent;
 		switch (pWin32->m_msg)
 		{
+		case WM_SIZE:
+			if (m_pDXManager->GetSwapChain()) {
+				m_pDXManager->Resize(
+					LOWORD(pWin32->m_lParam),
+					HIWORD(pWin32->m_wParam));
+			}
+			break;
 		case WM_CLOSE:
 			m_pSMOwner->Transition(CLSID_CStateNull);
 			return 0;
