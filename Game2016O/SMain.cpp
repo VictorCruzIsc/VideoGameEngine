@@ -8,6 +8,8 @@ CSMain::CSMain()
 	m_pDXManager = NULL;
 	m_pDXPainter = NULL;
 	m_bInitializationCorrect = true;
+	m_pSndManager = NULL;
+	m_pInputManager = NULL;
 }
 
 
@@ -48,6 +50,17 @@ void CSMain::OnEntry(void)
 	else {
 		printf("Bad"); fflush(stdout);
 	}
+
+	printf("Input init...\n"); fflush(stdout);
+	m_pInputManager = new CInputManager();
+	if (!m_pInputManager->InitializeDirectInputSession(m_hInstance)) {
+		printf("Bad input init...\n");
+	}
+	if (m_pInputManager->ConfigureDevices(m_hWnd)) {
+		printf("Unable to acquire input devices...\n");
+		m_bInitializationCorrect = false;
+	}
+	fflush(stdout);
 }
 #include "HSM\EventWin32.h"
 #include "HSM\StateMachineManager.h"
@@ -58,6 +71,15 @@ unsigned long CSMain::OnEvent(CEventBase * pEvent)
 		// Encargado de quitar el sonido muerto cuando tenga tiempo libre
 		m_pSndManager->RemoveAllSndFxStopped(); // Remover todos los eventos de sonidos que han sido reproducidos
 
+		// Escaneo de dispostivos
+		for (int iSource = 0; iSource < m_pInputManager->GetDeviceCount(); iSource++) {
+			DIJOYSTATE2 js2;
+			if (m_pInputManager->ReadState(js2, iSource)) {
+				CInputEvent *pInput = new CInputEvent(iSource, 0, js2);
+				m_pSMOwner->PostEvent(pInput);
+			}
+
+		}
 		// Encargado de Dibujar cuando tenga tiempo libre
 
 		/*
@@ -111,6 +133,11 @@ void CSMain::OnExit(void)
 {
 	m_pDXPainter->Uninitialize();
 	m_pDXManager->Uninitialize();
+	m_pSndManager->UnitializeSoundEngine();
+	m_pInputManager->FinalizeDirectInputSession();
 	SAFE_DELETE(m_pDXPainter);
 	SAFE_DELETE(m_pDXManager);
+	CSndFactory Factory;
+	Factory.DestroyObject(m_pSndManager);
+	SAFE_DELETE(m_pInputManager);
 }

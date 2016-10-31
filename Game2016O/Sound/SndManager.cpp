@@ -56,7 +56,6 @@ CSndManager::CSndManager(CSndFactory *pFactory)
 
 CSndManager::~CSndManager(void)
 {
-	ClearEngine();
 	SAFE_DELETE(m_pSndFxPool);
 	SAFE_DELETE(m_pSndStreamPool);
 	SAFE_DELETE(m_pSndFxPlayingPool);
@@ -113,7 +112,7 @@ void CSndManager::UnitializeSoundEngine()
 	SAFE_DELETE(m_pSndStreamPlayingPool);
 	SAFE_RELEASE(m_pIPrimaryBuffer);
 	SAFE_RELEASE(m_pIDirectSound);
-	
+	SAFE_DELETE(m_pFactory);
 }
 
 CSndFx* CSndManager::LoadSoundFx(TCHAR *pszFileName, unsigned long ulIDSndFx)

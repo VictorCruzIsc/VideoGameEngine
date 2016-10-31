@@ -73,6 +73,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Application Time!!
 		g_Game.Dispatch(&AppLoop);
+		// Si vas a producir eventos no los produzcas internamente
+		// envia a ver si hay eventos y los procesa
+		g_Game.ProcessEvents(); 
 	}
 
     return (int) msg.wParam;
@@ -139,6 +142,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    g_Game.LinkToSuperState(CLSID_CSGame, CLSID_CSMain);
    g_Game.SetInitialState(CLSID_CSMain);
    pSMain->m_hWnd = hWnd;
+   pSMain->m_hInstance = hInstance;
    g_Game.Start();
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
